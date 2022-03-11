@@ -1,6 +1,5 @@
 import multiprocessing as mp
 import os.path
-import shutil
 import urllib.request
 
 import pandas as pd
@@ -17,15 +16,17 @@ def file2url(url_pth, captions_pth):
                 # mkdir
                 urlblocks = url.strip().split('/')
                 folder = urlblocks[3]
-                if os.path.exists(os.path.join(BASE_FOLDER, folder)):
-                    shutil.rmtree(os.path.join(BASE_FOLDER, folder))
-                os.mkdir(os.path.join(BASE_FOLDER, folder))
+                if not os.path.exists(os.path.join(BASE_FOLDER, folder)):
+                    os.mkdir(os.path.join(BASE_FOLDER, folder))
                 
                 pth = os.path.join(BASE_FOLDER, urlblocks[-2], urlblocks[-1])
                 yield url.strip(), captions.strip(), pth
 
 def url2file(args):
     url, captions, pth = args
+    if os.path.exists(pth):
+        return pth, captions
+
     try:
         urllib.request.urlretrieve(url, pth)
         return pth, captions
