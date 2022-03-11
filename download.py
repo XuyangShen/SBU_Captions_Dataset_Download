@@ -6,7 +6,7 @@ import pandas as pd
 from tqdm import tqdm
 
 BASE_FOLDER = 'sbu_images'
-PROCESS = 32
+PROCESS = 96
 
 def file2url(url_pth, captions_pth):
     with open(url_pth, 'r') as ufh:
